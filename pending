@@ -472,25 +472,78 @@ namespace ConsoleApp2
                 }
             }
             Console.Clear();
-            Console.WriteLine("=================================================");
-            Console.WriteLine("                    Leaderboard                  ");
-            Console.WriteLine("=================================================");
-            Console.WriteLine(String.Format("{0,-5}{1,-20}{2,-10}", "#", "USER", "POINTS"));
-            Console.WriteLine("-------------------------------------------------");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(@"  ╔═════════════════════════════════════════════════════════════════════╗");
+            Console.WriteLine(@"  ║             ___________                                             ║");
+            Console.WriteLine(@"  ║            '._==_==_=_.'      [ GLOBAL LEADERBOARD ]                ║");
+            Console.WriteLine(@"  ║            .-\:      /-.      ======================                ║");
+            Console.WriteLine(@"  ║           | (|:.     |) |          TOP PLAYERS                      ║");
+            Console.WriteLine(@"  ║            '-|:.     |-'                                            ║");
+            Console.WriteLine(@"  ║              \::.    /                                              ║");
+            Console.WriteLine(@"  ║               '::. .'                                               ║");
+            Console.WriteLine(@"  ║                 ) (                                                 ║");
+            Console.WriteLine(@"  ║               _.' '._                                               ║");
+            Console.WriteLine(@"  ║              `"""""" ""`                                            ║");
+            Console.WriteLine(@"  ╠═════════════════════════════════════════════════════════════════════╣");
+            Console.WriteLine(@"  ║  RANK  │           USERNAME           │         TOTAL SCORE         ║");
+            Console.WriteLine(@"  ╠════════╪══════════════════════════════╪═════════════════════════════╣");
+
+            // --- PLAYERS (TOP 10 ONLY) ---
             int rank = 1;
+            bool hasPlayers = false;
+
             for (int i = 0; i < leaderboard.Length; i++)
             {
-                if (leaderboard[i] != "")
+                if (!string.IsNullOrWhiteSpace(leaderboard[i]))
                 {
+                    hasPlayers = true;
                     string[] parts = leaderboard[i].Split(',');
-                    Console.WriteLine(String.Format("{0,-5}{1,-20}{2,-10}", rank, parts[0], parts[1]));
+
+                    string name = parts[0];
+                    string pts = parts.Length > 1 ? parts[1] : "0";
+
+                    // Limit letters to 26 chars so it doesn't mess up the box huhu
+                    if (name.Length > 26) name = name.Substring(0, 23) + "...";
+
+                    Console.Write(@"  ║ ");
+
+
+                    if (rank == 1) Console.ForegroundColor = ConsoleColor.Yellow;
+                    else if (rank == 2) Console.ForegroundColor = ConsoleColor.Gray;
+                    else if (rank == 3) Console.ForegroundColor = ConsoleColor.DarkRed;
+                    else Console.ForegroundColor = ConsoleColor.White;
+
+
+                    Console.Write(string.Format("{0,-6} │  {1,-26}  │  {2,-25}", $"#{rank}", name, $"{pts} PTS"));
+
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine(@"║");
+
                     rank++;
+
+                    // Limit to Top 10 so the screen doesn't overflow
+                    if (rank > 10) break;
                 }
             }
+            if (!hasPlayers)
+            {
+                Console.Write(@"  ║");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("       [ NO RECORDS FOUND. BE THE FIRST TO SET A HIGH SCORE! ]       ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(@"║");
+            }
+
+
+            Console.WriteLine(@"  ╚════════╧══════════════════════════════╧═════════════════════════════╝");
             Console.WriteLine();
-            Console.WriteLine("Press any key to go back");
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("    Tap to go back   ");
+            Console.ResetColor();
+
             Console.ReadKey();
-            gamemenu(wordDictionary);
+            return;
         }
         static void DrawHangman(int stage)
         {
@@ -954,35 +1007,62 @@ namespace ConsoleApp2
             bool try4 = false;
             while (!try4)
             {
-                Console.WriteLine("==============Reading comprehension===========");
-                Console.WriteLine("Choose your Level of Difficulty");
-                Console.WriteLine("[1]. Easy Level");
-                Console.WriteLine("[2]. Medium Level");
-                Console.WriteLine("[3]. Hard Level");
-                Console.WriteLine("[4]. Exit");
-                Console.WriteLine("===============================================");
-                Console.Write("Enter your choice: ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(@"  ╔═════════════════════════════════════════════════════════════╗");
+                Console.WriteLine(@"  ║                 [ READING COMPREHENSION ]                   ║");
+                Console.WriteLine(@"  ╠════════════╦════════════════════════════════════════════════╣");
+                Console.WriteLine(@"  ║  .------.  ║                                                ║");
+                Console.WriteLine(@"  ║  |      |  ║        CHOOSE YOUR LEVEL OF DIFFICULTY         ║");
+                Console.WriteLine(@"  ║  |______|  ║                                                ║");
+                Console.WriteLine(@"  ║   _||||_   ║        [ 1 ] . EASY LEVEL                      ║");
+                Console.WriteLine(@"  ║  |______|  ║        [ 2 ] . MEDIUM LEVEL                    ║");
+                Console.WriteLine(@"  ║            ║        [ 3 ] . HARD LEVEL                      ║");
+                Console.WriteLine(@"  ║            ║        [ 4 ] . EXIT                            ║");
+                Console.WriteLine(@"  ║  ========  ║                                                ║");
+                Console.WriteLine(@"  ╚════════════╩════════════════════════════════════════════════╝");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("    Enter your choice (1-4) : ");
+                Console.ResetColor();
                 string choice = Console.ReadLine().ToUpper();
                 switch (choice)
                 {
                     case "1":
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("\n    Loading Easy Level...");
+                        System.Threading.Thread.Sleep(600);
                         easy();
                         try4 = true;
                         break;
                     case "2":
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("\n    Loading Medium Level...");
+                        System.Threading.Thread.Sleep(600);
                         medium();
                         try4 = true;
                         break;
                     case "3":
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("\n    Loading Medium Level...");
+                        System.Threading.Thread.Sleep(600);
                         hard();
                         try4 = true;
                         break;
                     case "4":
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.WriteLine("\n    Exiting Reading Comprehension...");
+                        System.Threading.Thread.Sleep(500);
                         try4 = true;
                         break;
                     default:
                         Console.Clear();
-                        Console.WriteLine("Invalid Option pls enter either 1, 2, 3 or 4");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n    [!] Invalid Option pls enter either 1, 2, 3 or 4");
+                        Console.ResetColor();
+                        System.Threading.Thread.Sleep(1500);
                         try4 = false;
                         break;
                 }
